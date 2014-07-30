@@ -1,9 +1,41 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * The MIT License
+ *
+ * Copyright 2014 João Andrade.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package dwriter;
+
+import dwriter.i18n.I18N;
+import dwriter.i18n.Lang;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Dwriter - the main class of the application. The class manages open files,
@@ -18,71 +50,53 @@ public class Dwriter {
      * The filename of the default properties, loaded from the directory of the
      * class
      */
-    private static final String DEFAULT_PROPERTIES_FILENAME = "res/defaults.xml";
-    
+    private static final String DEFAULT_PROPERTIES_FILENAME = "defaults.xml";
+
     /**
      * The filename of the user properties, loaded from the user's current
      * working directory
      */
-    private static final String USER_PROPERTIES_FILENAME = "csheets.xml";
-    
+    private static final String USER_PROPERTIES_FILENAME = "dwriter.xml";
+
     /**
      * The open files
      */
     //private Map<Workfile, File> workfiles = new HashMap<Workfile, File>();
-    
     /**
      * The application's properties
      */
-    //private NamedProperties props;
-    
+    private Properties props;
+
     /**
      * The listeners registered to receive events
      */
     //private List<SpreadsheetAppListener> listeners
     //        = new ArrayList<SpreadsheetAppListener>();
     /**
-     * Creates the CleanSheets application.
+     * Creates the Dwriter application.
      */
-    /*public CleanSheets() {
-     // Loads compilers
-     FormulaCompiler.getInstance();
+    public Dwriter() {
 
-     // Loads language
-     Language.getInstance();
+        System.out.println(I18N.getInstance().getString("test"));
 
-     // Loads extensions
-     ExtensionManager.getInstance();
+        I18N.getInstance().setLanguage(Lang.EN);
 
-     // Loads default properties
-     Properties defaultProps = new Properties();
-     InputStream defaultStream = CleanSheets.class.getResourceAsStream(DEFAULT_PROPERTIES_FILENAME);
-     if (defaultStream != null) {
-     try {
-     defaultProps.loadFromXML(defaultStream);
-     } catch (IOException e) {
-     System.err.println("Could not load default application properties.");
-     } finally {
-     try {
-     if (defaultStream != null) {
-     defaultStream.close();
-     }
-     } catch (IOException e) {
-     }
-     }
-     }
+        System.out.println(I18N.getInstance().getString("test"));
 
-     // Loads user properties
-     File propsFile = new File(USER_PROPERTIES_FILENAME);
-     props = new NamedProperties(propsFile, defaultProps);
-}*/
+        // Loads extensions
+        //ExtensionManager.getInstance();
+        // Loads default properties
+        loadProperties();
 
-/**
- * Starts Driter from the command-line.
- *
- * @param args the command-line arguments (not used)
- */
-public static void main(String[] args) {
+        System.out.println(props.getProperty("i18n.language"));
+    }
+
+    /**
+     * Starts Driter from the command-line.
+     *
+     * @param args the command-line arguments (not used)
+     */
+    public static void main(String[] args) {
         Dwriter app = new Dwriter();
 
         // Configures look and feel
@@ -100,5 +114,109 @@ public static void main(String[] args) {
         //app.create();
     }
 
-    // mais
+    /**
+     * Loads default properties.
+     */
+    private void loadDefaultProperties() {
+
+        Properties defaultProps = new Properties();
+        InputStream defaultStream = Dwriter.class.
+                getResourceAsStream(DEFAULT_PROPERTIES_FILENAME);
+        if (defaultStream != null) {
+            try {
+                defaultProps.loadFromXML(defaultStream);
+            } catch (IOException e) {
+                e.getLocalizedMessage();
+                System.err.println("Could not load default application "
+                        + "properties.");
+            } finally {
+                try {
+                    if (defaultStream != null) {
+                        defaultStream.close();
+                    }
+                } catch (IOException e) {
+                }
+            }
+        }
+
+        props = defaultProps;
+    }
+
+    /**
+     * Loads user properties.
+     */
+    private void loadProperties() {
+
+        try {
+
+            FileInputStream uProps = new FileInputStream(USER_PROPERTIES_FILENAME);
+            props = new Properties();
+            //InputStream uProps = Dwriter.class.
+            //        getResourceAsStream(USER_PROPERTIES_FILENAME);
+            props.loadFromXML(uProps);
+            uProps.close();
+        } catch (NullPointerException | IOException ex) {
+            ex.getMessage();
+            System.err.println("no user properties.");
+            loadDefaultProperties();
+            createUserProperties();
+        }
+
+    }
+
+    /**
+     *
+     */
+    private void createUserProperties() {
+        try {
+            Properties uProps = new Properties();
+            uProps.setProperty("mainwindow.width",
+                    props.getProperty("mainwindow.width"));
+            uProps.setProperty("mainwindow.height",
+                    props.getProperty("mainwindow.height"));
+            uProps.setProperty("i18n.language",
+                    props.getProperty("i18n.language"));
+
+            FileOutputStream out = new FileOutputStream(USER_PROPERTIES_FILENAME);
+
+            //File f = new File(USER_PROPERTIES_FILENAME);
+            //OutputStream out = new FileOutputStream(f);
+            uProps.storeToXML(out, null);
+            out.close();
+            props = uProps;
+        } catch (NullPointerException | IOException e) {
+            e.getMessage();
+            System.err.println("Error creating user properties!");
+        }
+
+    }
+
+    //public void saveUserProperties() {}
+    /**
+     * Returns the current user properties.
+     *
+     * @return the current user properties
+     */
+    public Properties getUserProperties() {
+        return props;
+    }
+
+    /**
+     * Exits the application.
+     */
+    public void exit() {
+        // Stores properties
+        /*if (props.size() > 0) {
+         try {
+         props.storeToXML("CleanSheets User Properties ("
+         + DateFormat.getDateTimeInstance().format(new Date()) + ")");
+         } catch (IOException e) {
+         System.err.println("An error occurred while saving properties.");
+         }
+         }*/
+
+        // Terminates the virtual machine
+        System.exit(0);
+    }
+
 }
