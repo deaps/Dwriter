@@ -21,8 +21,64 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package dwriter.core;
 
 /**
- * Provides the core classes for the application's data model.
+ * This is the first implementation of WorkFile interface.
+ *
+ * @author João Andrade (joaodeaps@gmail.com)
  */
-package dwriter.core;
+public class WorkFileV1 implements WorkFile {
+
+    /**
+     * 
+     */
+    private String name;
+
+    /**
+     * 
+     */
+    private String content;
+
+    /**
+     * 
+     */
+    private String canonicalPath;
+
+    /**
+     * 
+     */
+    public WorkFileV1() {
+        this.name = "";
+        this.content = "";
+        this.canonicalPath = null;
+    }
+    
+    /**
+     * 
+     * @param name
+     * @param content
+     * @param canonicalPath 
+     */
+    public WorkFileV1(String name, String content, String canonicalPath) {
+        this.name = name;
+        this.content = content;
+        this.canonicalPath = canonicalPath;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getContent() {
+        return content;
+    }
+
+    @Override
+    public String getCanonicalPath() {
+        return canonicalPath;
+    }
+
+}

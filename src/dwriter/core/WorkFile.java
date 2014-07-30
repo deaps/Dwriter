@@ -22,7 +22,19 @@
  * THE SOFTWARE.
  */
 
-/**
- * Provides the core classes for the application's data model.
- */
 package dwriter.core;
+
+/**
+ * This interface represents a working file.
+ * 
+ * @author João Andrade (joaodeaps@gmail.com)
+ */
+public interface WorkFile {
+    
+    public String getName();
+    
+    public String getContent();
+    
+    public String getCanonicalPath();
+
+}
