@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2014 João Andrade.
+ * Copyright 2014 Joao Andrade.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,10 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package dwriter.ui;
+
+import dwriter.Dwriter;
+import javax.swing.JFrame;
 
 /**
+ * The main frame of the GUI.
  *
- * Provides the source code of the Dwriter application, and an entry-point for
- * command-line invocation.  *
+ * @author João Andrade (joaodeaps@gmail.com)
  */
-package dwriter;
+public class Frame extends JFrame {
+
+    public Frame(Dwriter app) {
+
+    }
+}

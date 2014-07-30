@@ -21,10 +21,53 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package dwriter.ui;
+
+import java.awt.Component;
+import java.awt.Graphics;
+import javax.swing.Icon;
 
 /**
+ * An Blank Icon.
  *
- * Provides the source code of the Dwriter application, and an entry-point for
- * command-line invocation.  *
+ * @author João Andrade (joaodeaps@gmail.com)
  */
-package dwriter;
+public class BlankIcon implements Icon {
+
+    /**
+     * Width of the blank icon.
+     */
+    private int width;
+
+    /**
+     * Height of the blank icon.
+     */
+    private int height;
+
+    /**
+     * Class Constructor.
+     *
+     * @param width
+     * @param height
+     */
+    public BlankIcon(int width, int height) {
+        this.width = width;
+        this.height = height;
+    }
+
+    @Override
+    public void paintIcon(Component c, Graphics g, int x, int y) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public int getIconWidth() {
+        return width;
+    }
+
+    @Override
+    public int getIconHeight() {
+        return height;
+    }
+
+}
