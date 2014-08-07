@@ -33,12 +33,31 @@ import java.util.ResourceBundle;
  */
 public class I18N {
 
+    /**
+     * The singleton instance.
+     */
     private static I18N instance = null;
+    
+    /**
+     * The resource name of the bundle.
+     */
     private final String MESSAGES_BUNDLE = "dwriter.i18n.lang.MessagesBundle";
+    
+    /**
+     * The Locale object, if the wanted Locale is diferent of the current 
+     * machine.
+     */
     private Locale locale;
+    
+    /**
+     * A bundle with the translation Strings
+     */
     private ResourceBundle labels;
     
-    
+    /**
+     * Main constructor. for private use.
+     * @param language 
+     */
     private I18N(Lang language) {
         if (language == null) {
             labels = ResourceBundle.getBundle(MESSAGES_BUNDLE);
@@ -48,6 +67,11 @@ public class I18N {
         }
     }
 
+    /**
+     * The getInstance method of the singleton.
+     * 
+     * @return instance
+     */
     public static I18N getInstance() {
         if (instance == null) {
             instance = new I18N(null);
@@ -55,11 +79,21 @@ public class I18N {
         return instance;
     }
 
+    /**
+     * Changes the language of the application.
+     * @param language target language
+     */
     public void setLanguage(Lang language) {
         locale = new Locale(language.name().toLowerCase());
         labels = ResourceBundle.getBundle(MESSAGES_BUNDLE, locale);
     }
     
+    /**
+     * This method returns the correspondent string of the label passed by
+     * parameter.
+     * @param label
+     * @return 
+     */
     public String getString(String label) {
         return labels.getString(label);
     }

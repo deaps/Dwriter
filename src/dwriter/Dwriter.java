@@ -25,6 +25,7 @@ package dwriter;
 
 import dwriter.i18n.I18N;
 import dwriter.i18n.Lang;
+import java.awt.EventQueue;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -77,18 +78,18 @@ public class Dwriter {
      */
     public Dwriter() {
 
-        System.out.println(I18N.getInstance().getString("test"));
+        /*System.out.println(I18N.getInstance().getString("test"));
 
         I18N.getInstance().setLanguage(Lang.EN);
 
-        System.out.println(I18N.getInstance().getString("test"));
+        System.out.println(I18N.getInstance().getString("test"));*/
 
         // Loads extensions
         //ExtensionManager.getInstance();
         // Loads default properties
         loadProperties();
 
-        System.out.println(props.getProperty("i18n.language"));
+        //System.out.println(props.getProperty("i18n.language"));
     }
 
     /**
@@ -100,18 +101,17 @@ public class Dwriter {
         Dwriter app = new Dwriter();
 
         // Configures look and feel
-        javax.swing.JFrame.setDefaultLookAndFeelDecorated(true);
-        javax.swing.JDialog.setDefaultLookAndFeelDecorated(true);
+        /*javax.swing.JFrame.setDefaultLookAndFeelDecorated(true);
+        javax.swing.JDialog.setDefaultLookAndFeelDecorated(false);
 
         try {
             javax.swing.UIManager.setLookAndFeel(
                     javax.swing.UIManager.getCrossPlatformLookAndFeelClassName());
         } catch (Exception e) {
-        }
+        }*/
 
         // Creates user interface
-        //new dwriter.ui.Frame.Creator(app).createAndWait();
-        //app.create();
+        new dwriter.ui.Frame.Creator(app).createAndWait();
     }
 
     /**

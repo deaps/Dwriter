@@ -21,52 +21,42 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package dwriter.ui;
+package dwriter.ui.ctrl;
 
-import java.awt.Component;
-import java.awt.Graphics;
-import javax.swing.Icon;
+import dwriter.Dwriter;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import static javax.swing.Action.ACCELERATOR_KEY;
+import static javax.swing.Action.MNEMONIC_KEY;
+import javax.swing.KeyStroke;
 
 /**
- * An Blank Icon.
  *
  * @author João Andrade (joaodeaps@gmail.com)
  */
-public class BlankIcon implements Icon {
+public class OpenAction extends BaseAction {
 
-    /**
-     * Width of the blank icon.
-     */
-    private int width;
-
-    /**
-     * Height of the blank icon.
-     */
-    private int height;
-
-    /**
-     * Class Constructor.
-     *
-     * @param width
-     * @param height
-     */
-    public BlankIcon(int width, int height) {
-        this.width = width;
-        this.height = height;
+    private Dwriter app;
+    
+    public OpenAction(Dwriter app) {
+        this.app = app;
     }
 
     @Override
-    public void paintIcon(Component c, Graphics g, int x, int y) {
+    protected String getName() {
+        return "Open...";
     }
 
     @Override
-    public int getIconWidth() {
-        return width;
+    protected void defineProperties() {
+        putValue(MNEMONIC_KEY, KeyEvent.VK_O);
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
+        //putValue(SMALL_ICON, new ImageIcon(Dwriter.class.getResource("res/img/new.gif")));
     }
 
     @Override
-    public int getIconHeight() {
-        return height;
+    public void actionPerformed(ActionEvent e) {
+        System.out.println("Abre ficheiro");
     }
 
 }
