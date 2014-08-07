@@ -24,12 +24,19 @@
 package dwriter.ui;
 
 import dwriter.Dwriter;
+import dwriter.ui.ctrl.CopyAction;
+import dwriter.ui.ctrl.CutAction;
+import dwriter.ui.ctrl.ExitAction;
 import dwriter.ui.ctrl.NewAction;
 import dwriter.ui.ctrl.OpenAction;
+import dwriter.ui.ctrl.PasteAction;
+import dwriter.ui.ctrl.ReverseAction;
 import dwriter.ui.ctrl.SaveAction;
+import dwriter.ui.ctrl.SaveAsAction;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.event.KeyEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -56,6 +63,8 @@ public class Frame extends JFrame {
      */
     private Dwriter app;
 
+    private static final String PARTIAL_FRAME_TITLE = " - Dwriter";
+
     /*Design Vars*/
     private JMenuBar menuBar = new JMenuBar();
     private JMenu menu;
@@ -81,8 +90,10 @@ public class Frame extends JFrame {
      * Class Constructor.
      *
      * @param app
+     * @param title
      */
-    public Frame(Dwriter app) {
+    public Frame(Dwriter app, String title) {
+        super(title);
         this.app = app;
 
         createWindow();
@@ -93,13 +104,10 @@ public class Frame extends JFrame {
      * Creates the window.
      */
     private void createWindow() {
-        
+
         //menuBar
-        
         //this.setIcon(getClass().getResource("drawing.png")).getImage();
-        //this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("drawing.png")));
-        
-        
+        //this.setIconImage(Toolkit.getDefaultToolkit().getImage(Frame.class.getResource("resources/img/drawing.png")));
         setJMenuBar(menuBar);
 
         //menu file
@@ -114,10 +122,7 @@ public class Frame extends JFrame {
         menuItem = new JMenuItem(new SaveAction(app));
         menu.add(menuItem);
 
-        menuItem = new JMenuItem("Save as...");
-        //it.addActionListener(tl);
-        menuItem.setMnemonic('a');
-        menuItem.setAccelerator(KeyStroke.getKeyStroke("shift ctrl S"));
+        menuItem = new JMenuItem(new SaveAsAction(app));
         menu.add(menuItem);
 
         menu.addSeparator();
@@ -130,61 +135,45 @@ public class Frame extends JFrame {
 //        me.add(it);
 //
 //        me.addSeparator();
-
-        menuItem = new JMenuItem("Exit");
-        //it.addActionListener(tl);
-        //it.setMnemonic('e');
-        menuItem.setAccelerator(KeyStroke.getKeyStroke("ctrl E"));
+        menuItem = new JMenuItem(new ExitAction(app));
         menu.add(menuItem);
 
         menuBar.add(menu);
+
         //menu editar
         menu = new JMenu("Edit");
 
-        menuItem = new JMenuItem("Reverse");
-        //it.addActionListener(tl);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke("ctrl Z"));
+        menuItem = new JMenuItem(new ReverseAction(app));
         menu.add(menuItem);
-        
+
         menu.addSeparator();
-        
-        menuItem = new JMenuItem("Cut");
-        menuItem.setAccelerator(KeyStroke.getKeyStroke("ctrl X"));
-        //it.addActionListener(tl);
-        
+
+        menuItem = new JMenuItem(new CutAction(app));
         menu.add(menuItem);
-        
-        menuItem = new JMenuItem("Copy");
-        //it.addActionListener(tl);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke("ctrl C"));
-        
+
+        menuItem = new JMenuItem(new CopyAction(app));
         menu.add(menuItem);
-        
-        menuItem = new JMenuItem("Paste");
-        //it.addActionListener(tl);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke("ctrl V"));
-        
+
+        menuItem = new JMenuItem(new PasteAction(app));
         menu.add(menuItem);
-        
+
         menuItem = new JMenuItem("Delete");
         //it.addActionListener(tl);
-        
-        
+
         menu.add(menuItem);
-        
+
         menu.addSeparator();
-        
+
         menuItem = new JMenuItem("Select all");
         //it.addActionListener(tl);
         menuItem.setAccelerator(KeyStroke.getKeyStroke("ctrl A"));
 
-        
         menu.add(menuItem);
-        
+
         menuItem = new JMenuItem("Time/Date");
         menuItem.setAccelerator(KeyStroke.getKeyStroke("F5"));
         //it.addActionListener(tl);
-        
+
         menu.add(menuItem);
 
         menuBar.add(menu);
@@ -195,7 +184,7 @@ public class Frame extends JFrame {
         menuItem = new JMenuItem("Wrap text");
         //it.addActionListener(tl);
         //it.setAccelerator(KeyStroke.getKeyStroke("ctrl "));
-        
+
         menu.add(menuItem);
 
         menuItem = new JMenuItem("Text options");
@@ -209,13 +198,12 @@ public class Frame extends JFrame {
         menuItem = new JMenuItem("About DWriter");
         //it.addActionListener(tl);
         menuItem.setAccelerator(KeyStroke.getKeyStroke("F1"));
-        
+
         menu.add(menuItem);
-        
+
         menuBar.add(menu);
 
         //CENTER
-
         textArea = new JTextArea();
         //ta.setText(data);
         textArea.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -224,18 +212,18 @@ public class Frame extends JFrame {
         textAreaScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
         /*if (file.isFile()) {
-            try {
-                ta.setFont(DWriter.getFont());
-                ta.setBackground(DWriter.getBackground());
-                ta.setForeground(DWriter.getForeground());
-                if (!DWriter.getWrapMode()) {
-                    taSP.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-                }
-                ta.repaint();
-            } catch (NullPointerException ex) {
-                System.out.println(ex.getMessage());
-            }
-        }*/
+         try {
+         ta.setFont(DWriter.getFont());
+         ta.setBackground(DWriter.getBackground());
+         ta.setForeground(DWriter.getForeground());
+         if (!DWriter.getWrapMode()) {
+         taSP.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+         }
+         ta.repaint();
+         } catch (NullPointerException ex) {
+         System.out.println(ex.getMessage());
+         }
+         }*/
         doc = textArea.getDocument();
         doc.addUndoableEditListener(new UndoableEditListener() {
             @Override
@@ -246,26 +234,25 @@ public class Frame extends JFrame {
 
         add(textAreaScrollPane, BorderLayout.CENTER);
     }
-    
+
     /**
      * The defaultConfig sets the properties of the DWriterGUI Object.
      */
     private void defaultConfig() {
-        
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setLocation(200, 200);
         setSize(500, 550);
         setMinimumSize(new Dimension(200, 200));
         setVisible(true);
-        
+
         /*addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                dispose();
-                //exit();
-            }
-        });*/
+         @Override
+         public void windowClosing(WindowEvent e) {
+         dispose();
+         //exit();
+         }
+         });*/
     }
 
     /**
@@ -308,7 +295,7 @@ public class Frame extends JFrame {
                 e.printStackTrace();
                 return null;
             }
-            
+
             return frame;
         }
 
@@ -322,7 +309,7 @@ public class Frame extends JFrame {
 
         @Override
         public void run() {
-            frame = new Frame(app);
+            frame = new Frame(app, "(Sem titulo)" + PARTIAL_FRAME_TITLE);
         }
 
     }

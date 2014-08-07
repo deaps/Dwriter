@@ -23,20 +23,11 @@
  */
 package dwriter;
 
-import dwriter.i18n.I18N;
-import dwriter.i18n.Lang;
-import java.awt.EventQueue;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Dwriter - the main class of the application. The class manages open files,
