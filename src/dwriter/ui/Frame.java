@@ -24,8 +24,10 @@
 package dwriter.ui;
 
 import dwriter.Dwriter;
+import dwriter.ui.ctrl.AboutAction;
 import dwriter.ui.ctrl.CopyAction;
 import dwriter.ui.ctrl.CutAction;
+import dwriter.ui.ctrl.DeleteAction;
 import dwriter.ui.ctrl.ExitAction;
 import dwriter.ui.ctrl.NewAction;
 import dwriter.ui.ctrl.OpenAction;
@@ -33,6 +35,9 @@ import dwriter.ui.ctrl.PasteAction;
 import dwriter.ui.ctrl.ReverseAction;
 import dwriter.ui.ctrl.SaveAction;
 import dwriter.ui.ctrl.SaveAsAction;
+import dwriter.ui.ctrl.SelectAllAction;
+import dwriter.ui.ctrl.TimeDateAction;
+import dwriter.ui.ctrl.WrapTextAction;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -112,6 +117,7 @@ public class Frame extends JFrame {
 
         //menu file
         menu = new JMenu("File");
+        menu.setMnemonic('f');
 
         menuItem = new JMenuItem(new NewAction(app));
         menu.add(menuItem);
@@ -142,6 +148,7 @@ public class Frame extends JFrame {
 
         //menu editar
         menu = new JMenu("Edit");
+        menu.setMnemonic('e');
 
         menuItem = new JMenuItem(new ReverseAction(app));
         menu.add(menuItem);
@@ -157,48 +164,35 @@ public class Frame extends JFrame {
         menuItem = new JMenuItem(new PasteAction(app));
         menu.add(menuItem);
 
-        menuItem = new JMenuItem("Delete");
-        //it.addActionListener(tl);
-
+        menuItem = new JMenuItem(new DeleteAction(app));
         menu.add(menuItem);
 
         menu.addSeparator();
 
-        menuItem = new JMenuItem("Select all");
-        //it.addActionListener(tl);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke("ctrl A"));
-
+        menuItem = new JMenuItem(new SelectAllAction(app));
         menu.add(menuItem);
 
-        menuItem = new JMenuItem("Time/Date");
-        menuItem.setAccelerator(KeyStroke.getKeyStroke("F5"));
-        //it.addActionListener(tl);
-
+        menuItem = new JMenuItem(new TimeDateAction(app));
         menu.add(menuItem);
 
         menuBar.add(menu);
 
         //menu format
         menu = new JMenu("Format");
+        menu.setMnemonic('r');
 
-        menuItem = new JMenuItem("Wrap text");
-        //it.addActionListener(tl);
-        //it.setAccelerator(KeyStroke.getKeyStroke("ctrl "));
-
+        menuItem = new JMenuItem(new WrapTextAction(app));
         menu.add(menuItem);
 
-        menuItem = new JMenuItem("Text options");
+        //menuItem = new JMenuItem("Text options");
         //it.addActionListener(tl);
-        menu.add(menuItem);
-
+        //menu.add(menuItem);
         menuBar.add(menu);
 
         menu = new JMenu("About");
+        menu.setMnemonic('a');
 
-        menuItem = new JMenuItem("About DWriter");
-        //it.addActionListener(tl);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke("F1"));
-
+        menuItem = new JMenuItem(new AboutAction(app, this));
         menu.add(menuItem);
 
         menuBar.add(menu);
@@ -242,7 +236,7 @@ public class Frame extends JFrame {
 
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setLocation(200, 200);
-        setSize(500, 550);
+        setUserWindowDimensions();
         setMinimumSize(new Dimension(200, 200));
         setVisible(true);
 
@@ -253,6 +247,29 @@ public class Frame extends JFrame {
          //exit();
          }
          });*/
+    }
+
+    /**
+     * This function will get the width and the height from the properties file
+     * in order to set the last dimensions in use. In case of some error, this
+     * function will set a default dimension.
+     */
+    private void setUserWindowDimensions() {
+
+        int width;
+        int height;
+
+        try {
+            width = Integer.parseInt(app.getUserProperties()
+                    .getProperty("mainwindow.width"));
+            height = Integer.parseInt(app.getUserProperties()
+                    .getProperty("mainwindow.height"));
+        } catch (NumberFormatException e) {
+            width = 500;
+            height = 550;
+        }
+
+        setSize(width, height);
     }
 
     /**
