@@ -23,6 +23,11 @@
  */
 package dwriter.core;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * This is the first implementation of WorkFile interface.
  *
@@ -43,7 +48,7 @@ public class WorkFileV1 implements WorkFile {
     /**
      * 
      */
-    private String canonicalPath;
+    private File file;
 
     /**
      * 
@@ -51,19 +56,19 @@ public class WorkFileV1 implements WorkFile {
     public WorkFileV1() {
         this.name = "";
         this.content = "";
-        this.canonicalPath = null;
+        this.file = null;
     }
     
     /**
      * 
      * @param name
      * @param content
-     * @param canonicalPath 
+     * @param file 
      */
-    public WorkFileV1(String name, String content, String canonicalPath) {
+    public WorkFileV1(String name, String content, File file) {
         this.name = name;
         this.content = content;
-        this.canonicalPath = canonicalPath;
+        this.file = file;
     }
 
     @Override
@@ -78,7 +83,20 @@ public class WorkFileV1 implements WorkFile {
 
     @Override
     public String getCanonicalPath() {
-        return canonicalPath;
+        try {
+            return file.getCanonicalPath();
+        } catch (IOException ex) {
+            Logger.getLogger(WorkFileV1.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
-
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public void setContent(String content) {
+        this.content = content;
+    }
+    
 }
