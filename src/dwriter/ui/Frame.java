@@ -42,6 +42,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -199,11 +201,13 @@ public class Frame extends JFrame {
 
         //CENTER
         textArea = new JTextArea();
-        //ta.setText(data);
+        //textArea.addKeyListener(null);
+        textArea.setText(app.getActiveWorkFile().getContent());
         textArea.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         textAreaScrollPane = new JScrollPane(textArea);
-        textAreaScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        textAreaScrollPane.setVerticalScrollBarPolicy(
+                ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
         /*if (file.isFile()) {
          try {
@@ -240,13 +244,12 @@ public class Frame extends JFrame {
         setMinimumSize(new Dimension(200, 200));
         setVisible(true);
 
-        /*addWindowListener(new WindowAdapter() {
-         @Override
-         public void windowClosing(WindowEvent e) {
-         dispose();
-         //exit();
-         }
-         });*/
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                app.exit();
+            }
+        });
     }
 
     /**
@@ -306,10 +309,8 @@ public class Frame extends JFrame {
         public Frame createAndWait() {
             try {
                 EventQueue.invokeAndWait(this);
-            } catch (InterruptedException e) {
-                return null;
-            } catch (java.lang.reflect.InvocationTargetException e) {
-                e.printStackTrace();
+            } catch (InterruptedException |
+                    java.lang.reflect.InvocationTargetException e) {
                 return null;
             }
 

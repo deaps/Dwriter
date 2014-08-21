@@ -57,7 +57,7 @@ public class ExitAction extends BaseAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("sai");
+        app.exit();
     }
     
 }

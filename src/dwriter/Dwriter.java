@@ -23,10 +23,18 @@
  */
 package dwriter;
 
+import dwriter.core.WorkFile;
+import dwriter.core.WorkFileV1;
+import dwriter.ctrl.WorkFileFactory;
+import java.awt.List;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -53,27 +61,36 @@ public class Dwriter {
     /**
      * The open files
      */
-    //private Map<Workfile, File> workfiles = new HashMap<Workfile, File>();
+    private ArrayList<WorkFile> workfiles = new ArrayList<>();
+
+    /**
+     * The active file (on display)
+     */
+    private WorkFile activeWorkFile;
+
+    /**
+     * The factory of workfiles
+     */
+    private WorkFileFactory workFileFactory;
+
     /**
      * The application's properties
      */
     private Properties props;
 
     /**
-     * The listeners registered to receive events
-     */
-    //private List<SpreadsheetAppListener> listeners
-    //        = new ArrayList<SpreadsheetAppListener>();
-    /**
      * Creates the Dwriter application.
      */
     public Dwriter() {
 
+        workFileFactory = new WorkFileFactory();
+
+        addNewWorkFile();
         /*System.out.println(I18N.getInstance().getString("test"));
 
-        I18N.getInstance().setLanguage(Lang.EN);
+         I18N.getInstance().setLanguage(Lang.EN);
 
-        System.out.println(I18N.getInstance().getString("test"));*/
+         System.out.println(I18N.getInstance().getString("test"));*/
 
         // Loads extensions
         //ExtensionManager.getInstance();
@@ -81,6 +98,31 @@ public class Dwriter {
         loadProperties();
 
         //System.out.println(props.getProperty("i18n.language"));
+    }
+
+    /**
+     * Adds a new workfile to the arraylist of workfiles in display on the
+     * frame. And sets this new WorkFile as the active one.
+     */
+    public void addNewWorkFile() {
+        WorkFile obj = workFileFactory.getWorkFileV1(null, null,
+                null);
+
+        // Test
+        //obj.setContent("teste");
+        workfiles.add(obj);
+
+        activeWorkFile = workfiles.get(workfiles.size() - 1);
+
+    }
+
+    /**
+     * Returns the workFile in use.
+     *
+     * @return the active workFile
+     */
+    public WorkFile getActiveWorkFile() {
+        return activeWorkFile;
     }
 
     /**
@@ -93,14 +135,13 @@ public class Dwriter {
 
         // Configures look and feel
         /*javax.swing.JFrame.setDefaultLookAndFeelDecorated(true);
-        javax.swing.JDialog.setDefaultLookAndFeelDecorated(false);
+         javax.swing.JDialog.setDefaultLookAndFeelDecorated(false);
 
-        try {
-            javax.swing.UIManager.setLookAndFeel(
-                    javax.swing.UIManager.getCrossPlatformLookAndFeelClassName());
-        } catch (Exception e) {
-        }*/
-
+         try {
+         javax.swing.UIManager.setLookAndFeel(
+         javax.swing.UIManager.getCrossPlatformLookAndFeelClassName());
+         } catch (Exception e) {
+         }*/
         // Creates user interface
         new dwriter.ui.Frame.Creator(app).createAndWait();
     }
