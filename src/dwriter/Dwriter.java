@@ -121,10 +121,10 @@ public class Dwriter {
     public void addNewWorkFile() {
         // For now its only one tab...
         // otherwise remove this if
-        if(workfiles.size() == 1) {
+        if (workfiles.size() == 1) {
             workfiles.remove(0);
         }
-        
+
         WorkFile obj = workFileFactory.getWorkFileV1("Sem titulo", "", null);
 
         workfiles.add(obj);
@@ -149,7 +149,7 @@ public class Dwriter {
 
     /**
      *
-     * @return
+     * @return list of workfiles
      */
     public ArrayList<WorkFile> getWorkFiles() {
         return workfiles;
@@ -163,6 +163,14 @@ public class Dwriter {
     public WorkFile getActiveWorkFile() {
         return activeWorkFile;
     }
+    
+    /**
+     * 
+     * @return the main Frame
+     */
+    public Frame getFrame() {
+        return frame;
+    }
 
     /**
      *
@@ -175,7 +183,8 @@ public class Dwriter {
             String content = loadContent(activeWorkFile.getFile());
             // Checks if the content has been altered
             if (!activeWorkFile.getContent().equals(content)) {
-                op = yesNoCancelMessage("Do you want to save the changes?", "Save");
+                op = yesNoCancelMessage("Do you want to save the changes?",
+                        "Save");
                 switch (op) {
                     case 0:
                         // hit the Yes option (will save)
@@ -236,7 +245,7 @@ public class Dwriter {
      * @param workFile
      */
     public void saveAsFile(WorkFile workFile) {
-        FileChooser chooser = new FileChooser();
+        FileChooser chooser = new FileChooser("Save as...");
         Formatter formatter;
         File saveFile;
 
@@ -398,18 +407,23 @@ public class Dwriter {
      * Exits the application.
      */
     public void exit() {
-        // Stores properties
-        /*if (props.size() > 0) {
-         try {
-         props.storeToXML("CleanSheets User Properties ("
-         + DateFormat.getDateTimeInstance().format(new Date()) + ")");
-         } catch (IOException e) {
-         System.err.println("An error occurred while saving properties.");
-         }
-         }*/
 
-        // Terminates the virtual machine
-        System.exit(0);
+        boolean flag = saveActiveWorkFile();
+        if (flag) {
+            // Stores properties
+            /*if (props.size() > 0) {
+             try {
+             props.storeToXML("CleanSheets User Properties ("
+             + DateFormat.getDateTimeInstance().format(new Date()) + ")");
+             } catch (IOException e) {
+             System.err.println("An error occurred while saving properties.");
+             }
+             }*/
+
+            // Terminates the virtual machine
+            System.exit(0);
+        }
+
     }
 
     /**
