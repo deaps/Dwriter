@@ -26,8 +26,6 @@ package dwriter.ui.ctrl;
 import dwriter.Dwriter;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import static javax.swing.Action.ACCELERATOR_KEY;
 import static javax.swing.Action.MNEMONIC_KEY;
 import javax.swing.KeyStroke;
@@ -36,50 +34,32 @@ import javax.swing.KeyStroke;
  *
  * @author João Andrade (joaodeaps@gmail.com)
  */
-public class TimeDateAction extends BaseAction {
+public class UndoAction extends BaseAction {
 
     private final Dwriter app;
 
-    public TimeDateAction(Dwriter app) {
+    public UndoAction(Dwriter app) {
         this.app = app;
     }
 
     @Override
     protected String getName() {
-        return "Time/Date";
+        return "Undo";
     }
 
     @Override
     protected void defineProperties() {
-        putValue(MNEMONIC_KEY, KeyEvent.VK_F5);
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("F5"));
+        putValue(MNEMONIC_KEY, KeyEvent.VK_Z);
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Z,
+                ActionEvent.CTRL_MASK));
         //putValue(SMALL_ICON, new ImageIcon(Dwriter.class.getResource("res/img/new.gif")));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //CAN BE IMPROVED 
-        // after the action, the carot position goes to the end of the file)
-        int selectionStart;
-        int selectionEnd;
-        String temp1;
-        String temp2;
-
-        Calendar timeDate = Calendar.getInstance();
-        // Timedate property in i18n
-        SimpleDateFormat dataf = new SimpleDateFormat("h:m a dd/MM/yyyy");
-        String timeDateAdd = dataf.format(timeDate.getTime());
-
-        selectionStart = app.getFrame().getTextArea().getSelectionStart();
-        selectionEnd = app.getFrame().getTextArea().getSelectionEnd();
-
-        temp1 = app.getFrame().getTextArea().getText().
-                substring(0, selectionStart);
-        temp2 = app.getFrame().getTextArea().getText().
-                substring(selectionEnd);
-        app.getFrame().getTextArea().
-                setText(temp1 + "" + timeDateAdd + "" + temp2);
-
+        if (app.getFrame().getUndoManager().canUndo()) {
+            app.getFrame().getUndoManager().undo();
+        }
     }
 
 }

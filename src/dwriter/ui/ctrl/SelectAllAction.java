@@ -35,7 +35,7 @@ import javax.swing.KeyStroke;
  */
 public class SelectAllAction extends BaseAction {
     
-    private Dwriter app;
+    private final Dwriter app;
     
     public SelectAllAction(Dwriter app) {
         this.app = app;
@@ -49,13 +49,14 @@ public class SelectAllAction extends BaseAction {
     @Override
     protected void defineProperties() {
         putValue(MNEMONIC_KEY, KeyEvent.VK_A);
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_A, 
+                ActionEvent.CTRL_MASK));
         //putValue(SMALL_ICON, new ImageIcon(Dwriter.class.getResource("res/img/new.gif")));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("select all");
+        app.getFrame().getTextArea().selectAll();
     }
     
 }

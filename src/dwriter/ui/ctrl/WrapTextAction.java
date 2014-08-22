@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package dwriter.ui.ctrl;
 
 import dwriter.Dwriter;
@@ -30,15 +29,16 @@ import java.awt.event.KeyEvent;
 import static javax.swing.Action.ACCELERATOR_KEY;
 import static javax.swing.Action.MNEMONIC_KEY;
 import javax.swing.KeyStroke;
+import javax.swing.ScrollPaneConstants;
 
 /**
  *
  * @author João Andrade (joaodeaps@gmail.com)
  */
 public class WrapTextAction extends BaseAction {
-    
-    private Dwriter app;
-    
+
+    private final Dwriter app;
+
     public WrapTextAction(Dwriter app) {
         this.app = app;
     }
@@ -51,13 +51,26 @@ public class WrapTextAction extends BaseAction {
     @Override
     protected void defineProperties() {
         putValue(MNEMONIC_KEY, KeyEvent.VK_W);
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_W, 
+                ActionEvent.CTRL_MASK));
         //putValue(SMALL_ICON, new ImageIcon(Dwriter.class.getResource("res/img/new.gif")));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("wrapawrapawrapa");
+        // Can be saved to properties file
+
+        if (app.getFrame().getTextArea().getLineWrap() == false) {
+            app.getFrame().getTextArea().setLineWrap(true);
+            app.getFrame().getTextAreaScrollPane().
+                    setHorizontalScrollBarPolicy(
+                            ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        } else {
+            app.getFrame().getTextArea().setLineWrap(false);
+            app.getFrame().getTextAreaScrollPane().
+                    setHorizontalScrollBarPolicy(
+                            ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        }
     }
-    
+
 }
