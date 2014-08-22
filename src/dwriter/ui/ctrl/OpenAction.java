@@ -24,10 +24,18 @@
 package dwriter.ui.ctrl;
 
 import dwriter.Dwriter;
+import dwriter.core.WorkFile;
+import dwriter.ctrl.WorkFileFactory;
+import dwriter.ui.FileChooser;
+import dwriter.ui.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 import static javax.swing.Action.ACCELERATOR_KEY;
 import static javax.swing.Action.MNEMONIC_KEY;
+import javax.swing.JFileChooser;
 import javax.swing.KeyStroke;
 
 /**
@@ -37,9 +45,12 @@ import javax.swing.KeyStroke;
 public class OpenAction extends BaseAction {
 
     private Dwriter app;
-    
-    public OpenAction(Dwriter app) {
+
+    private Frame frame;
+
+    public OpenAction(Dwriter app, Frame frame) {
         this.app = app;
+        this.frame = frame;
     }
 
     @Override
@@ -56,7 +67,34 @@ public class OpenAction extends BaseAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("Abre ficheiro");
+
+        // First checks if the active file can be saved
+        // THIS IS FOR THE FIRST VERSION!
+        // When the multiple tabs system is implemented, the OpenAction
+        // will only create a new tab and a new workbook
+        boolean flag = app.saveActiveWorkFile();
+        if (flag) {
+            WorkFileFactory workFileFactory = new WorkFileFactory();
+            FileChooser chooser = new FileChooser();
+            File file;
+            String name;
+            String content;
+
+            int r = chooser.showOpenDialog(frame);
+            if (r == JFileChooser.APPROVE_OPTION) {
+                file = chooser.getSelectedFile();
+
+                name = file.getName();
+                content = app.loadContent(file);
+
+                WorkFile workFile = workFileFactory.getWorkFileV1(name, content,
+                        file);
+
+                app.addNewWorkFile(workFile);
+                frame.reload();
+            }
+        }
+
     }
 
 }
