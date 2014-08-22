@@ -24,48 +24,38 @@
 package dwriter.ui.ctrl;
 
 import dwriter.Dwriter;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import static javax.swing.Action.ACCELERATOR_KEY;
-import static javax.swing.Action.MNEMONIC_KEY;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.KeyStroke;
+import javax.swing.JTextArea;
 
 /**
  *
  * @author João Andrade (joaodeaps@gmail.com)
  */
-public class AboutAction extends BaseAction {
+public class KeyListener implements java.awt.event.KeyListener {
 
     private Dwriter app;
-
     private JFrame frame;
 
-    public AboutAction(Dwriter app, JFrame frame) {
+    public KeyListener(Dwriter app, JFrame frame) {
         this.app = app;
         this.frame = frame;
     }
 
     @Override
-    protected String getName() {
-        return "About Dwriter";
+    public void keyTyped(KeyEvent e) {
+
     }
 
     @Override
-    protected void defineProperties() {
-        putValue(MNEMONIC_KEY, KeyEvent.VK_F1);
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("F1"));
-        //putValue(SMALL_ICON, new ImageIcon(Dwriter.class.getResource("res/img/new.gif")));
+    public void keyPressed(KeyEvent e) {
+        // Do nothing...
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        JOptionPane.showMessageDialog(frame, "Dwriter is a simple text editor."
-                + "\n\nVersion: alpha\n\n"
-                + "Created by: João Andrade\nE-mail: joaodeaps@gmail.com\n",
-                "About Dwriter",
-                JOptionPane.INFORMATION_MESSAGE);
+    public void keyReleased(KeyEvent e) {
+        JTextArea textArea = (JTextArea) e.getSource();
+        app.getActiveWorkFile().setContent(textArea.getText());
     }
 
 }
