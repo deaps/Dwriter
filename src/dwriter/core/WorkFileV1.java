@@ -36,34 +36,34 @@ import java.util.logging.Logger;
 public class WorkFileV1 implements WorkFile {
 
     /**
-     * 
+     *
      */
     private String name;
 
     /**
-     * 
+     *
      */
     private String content;
 
     /**
-     * 
+     *
      */
     private File file;
 
     /**
-     * 
+     *
      */
     public WorkFileV1() {
         this.name = "";
         this.content = "";
         this.file = null;
     }
-    
+
     /**
-     * 
+     *
      * @param name
      * @param content
-     * @param file 
+     * @param file
      */
     public WorkFileV1(String name, String content, File file) {
         this.name = name;
@@ -86,17 +86,29 @@ public class WorkFileV1 implements WorkFile {
         try {
             return file.getCanonicalPath();
         } catch (IOException ex) {
-            Logger.getLogger(WorkFileV1.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
-        return null;
+
     }
-    
+
+    @Override
     public void setName(String name) {
         this.name = name;
     }
-    
+
+    @Override
     public void setContent(String content) {
         this.content = content;
     }
-    
+
+    @Override
+    public File getFile() {
+        return file;
+    }
+
+    @Override
+    public void setFile(File file) {
+        this.file = file;
+    }
+
 }

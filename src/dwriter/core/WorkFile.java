@@ -24,6 +24,8 @@
 
 package dwriter.core;
 
+import java.io.File;
+
 /**
  * This interface represents a working file.
  * 
@@ -35,6 +37,14 @@ public interface WorkFile {
     
     public String getContent();
     
+    public File getFile();
+    
     public String getCanonicalPath();
+    
+    public void setName(String name);
+    
+    public void setContent(String content);
+    
+    public void setFile(File file);
 
 }
