@@ -33,11 +33,13 @@ import dwriter.ui.ctrl.KeyListener;
 import dwriter.ui.ctrl.NewAction;
 import dwriter.ui.ctrl.OpenAction;
 import dwriter.ui.ctrl.PasteAction;
-import dwriter.ui.ctrl.ReverseAction;
+import dwriter.ui.ctrl.RedoAction;
 import dwriter.ui.ctrl.SaveAction;
 import dwriter.ui.ctrl.SaveAsAction;
 import dwriter.ui.ctrl.SelectAllAction;
 import dwriter.ui.ctrl.TimeDateAction;
+import dwriter.ui.ctrl.UndoAction;
+import dwriter.ui.ctrl.UndoListener;
 import dwriter.ui.ctrl.WrapTextAction;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -74,6 +76,8 @@ public class Frame extends JFrame {
     private static final String PARTIAL_FRAME_TITLE = " - Dwriter";
 
     private KeyListener keyListener;
+    
+    private final UndoManager undoManager = new UndoManager();
 
     /*Design Vars*/
     private JMenuBar menuBar = new JMenuBar();
@@ -84,15 +88,11 @@ public class Frame extends JFrame {
 
     /*Edit Vars*/
     private String tempHeap = null;
-    private UndoManager undoManager = new UndoManager();
+    
     private int ini = -1;
     private int fin = -1;
     /*Text/Format Vars*/
-    //private DWriterOptions options;
-    //private InPut inPut;
-    //private OutPut outPut;
-    //private File file = null;
-    private Document doc;
+    private Document document;
     private String originalData;
     private String docTitle;
 
@@ -105,7 +105,7 @@ public class Frame extends JFrame {
     public Frame(Dwriter app, String title) {
         super(title);
         this.app = app;
-        keyListener = new KeyListener(app, this);
+        keyListener = new KeyListener(app);
 
         createWindow();
         defaultConfig();
@@ -125,10 +125,10 @@ public class Frame extends JFrame {
         menu = new JMenu("File");
         menu.setMnemonic('f');
 
-        menuItem = new JMenuItem(new NewAction(app, this));
+        menuItem = new JMenuItem(new NewAction(app));
         menu.add(menuItem);
 
-        menuItem = new JMenuItem(new OpenAction(app, this));
+        menuItem = new JMenuItem(new OpenAction(app));
         menu.add(menuItem);
 
         menuItem = new JMenuItem(new SaveAction(app));
@@ -156,7 +156,10 @@ public class Frame extends JFrame {
         menu = new JMenu("Edit");
         menu.setMnemonic('e');
 
-        menuItem = new JMenuItem(new ReverseAction(app));
+        menuItem = new JMenuItem(new UndoAction(app));
+        menu.add(menuItem);
+        
+        menuItem = new JMenuItem(new RedoAction(app));
         menu.add(menuItem);
 
         menu.addSeparator();
@@ -189,16 +192,13 @@ public class Frame extends JFrame {
 
         menuItem = new JMenuItem(new WrapTextAction(app));
         menu.add(menuItem);
-
-        //menuItem = new JMenuItem("Text options");
-        //it.addActionListener(tl);
-        //menu.add(menuItem);
+        
         menuBar.add(menu);
 
         menu = new JMenu("About");
         menu.setMnemonic('a');
 
-        menuItem = new JMenuItem(new AboutAction(app, this));
+        menuItem = new JMenuItem(new AboutAction(app));
         menu.add(menuItem);
 
         menuBar.add(menu);
@@ -212,6 +212,9 @@ public class Frame extends JFrame {
         textAreaScrollPane = new JScrollPane(textArea);
         textAreaScrollPane.setVerticalScrollBarPolicy(
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        
+        document = textArea.getDocument();
+        document.addUndoableEditListener(new UndoListener(undoManager));
 
         /*if (file.isFile()) {
          try {
@@ -226,13 +229,7 @@ public class Frame extends JFrame {
          System.out.println(ex.getMessage());
          }
          }*/
-        doc = textArea.getDocument();
-        doc.addUndoableEditListener(new UndoableEditListener() {
-            @Override
-            public void undoableEditHappened(UndoableEditEvent e) {
-                undoManager.addEdit(e.getEdit());
-            }
-        });
+        
         
         add(textAreaScrollPane, BorderLayout.CENTER);
     }
@@ -244,6 +241,30 @@ public class Frame extends JFrame {
         // CHANGES ARE NEEDED FOR THE NEW VERSION WITH MULTIPLE TABS
         setTitle(app.getActiveWorkFile().getName() + PARTIAL_FRAME_TITLE);
         textArea.setText(app.getActiveWorkFile().getContent());
+    }
+    
+    /**
+     * 
+     * @return 
+     */
+    public UndoManager getUndoManager() {
+        return undoManager;
+    }
+    
+    /**
+     * 
+     * @return 
+     */
+    public JTextArea getTextArea() {
+        return textArea;
+    }
+    
+    /**
+     * 
+     * @return 
+     */
+    public JScrollPane getTextAreaScrollPane() {
+        return textAreaScrollPane;
     }
 
     /**
