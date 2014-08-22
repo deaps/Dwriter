@@ -125,7 +125,7 @@ public class Frame extends JFrame {
         menu = new JMenu("File");
         menu.setMnemonic('f');
 
-        menuItem = new JMenuItem(new NewAction(app));
+        menuItem = new JMenuItem(new NewAction(app, this));
         menu.add(menuItem);
 
         menuItem = new JMenuItem(new OpenAction(app, this));

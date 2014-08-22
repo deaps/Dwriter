@@ -24,6 +24,7 @@
 package dwriter.ui.ctrl;
 
 import dwriter.Dwriter;
+import dwriter.ui.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
@@ -36,9 +37,12 @@ import javax.swing.KeyStroke;
 public class NewAction extends BaseAction {
 
     private Dwriter app;
+    
+    private Frame frame;
 
-    public NewAction(Dwriter app) {
+    public NewAction(Dwriter app, Frame frame) {
         this.app = app;
+        this.frame = frame;
     }
 
     @Override
@@ -55,7 +59,15 @@ public class NewAction extends BaseAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("cria um novo");
+        // Tabs mechanism (in development, not this version)
+        //app.addNewWorkFile();
+        
+        boolean flag = app.saveActiveWorkFile();
+        
+        if(flag) {
+            app.addNewWorkFile();
+            frame.reload();
+        }
     }
 
 }
