@@ -37,7 +37,7 @@ import javax.swing.KeyStroke;
  */
 public class DeleteAction extends BaseAction {
     
-    private Dwriter app;
+    private final Dwriter app;
     
     public DeleteAction(Dwriter app) {
         this.app = app;

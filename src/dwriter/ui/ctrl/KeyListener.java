@@ -25,7 +25,6 @@ package dwriter.ui.ctrl;
 
 import dwriter.Dwriter;
 import java.awt.event.KeyEvent;
-import javax.swing.JFrame;
 import javax.swing.JTextArea;
 
 /**
@@ -34,12 +33,10 @@ import javax.swing.JTextArea;
  */
 public class KeyListener implements java.awt.event.KeyListener {
 
-    private Dwriter app;
-    private JFrame frame;
+    private final Dwriter app;
 
-    public KeyListener(Dwriter app, JFrame frame) {
+    public KeyListener(Dwriter app) {
         this.app = app;
-        this.frame = frame;
     }
 
     @Override

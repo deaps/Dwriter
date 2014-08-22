@@ -37,7 +37,7 @@ import javax.swing.KeyStroke;
  */
 public class CutAction extends BaseAction{
     
-    private Dwriter app;
+    private final Dwriter app;
     
     public CutAction(Dwriter app) {
         this.app = app;
@@ -51,7 +51,8 @@ public class CutAction extends BaseAction{
     @Override
     protected void defineProperties() {
         //putValue(MNEMONIC_KEY, KeyEvent.VK_U);
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_X, 
+                ActionEvent.CTRL_MASK));
         //putValue(SMALL_ICON, new ImageIcon(Dwriter.class.getResource("res/img/new.gif")));
     }
 

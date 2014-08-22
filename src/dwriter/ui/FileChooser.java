@@ -35,4 +35,9 @@ public class FileChooser extends JFileChooser {
     public FileChooser() {
         setFileSelectionMode(JFileChooser.FILES_ONLY);
     }
+
+    public FileChooser(String description) {
+        setDialogTitle(description);
+        setFileSelectionMode(JFileChooser.FILES_ONLY);
+    }
 }

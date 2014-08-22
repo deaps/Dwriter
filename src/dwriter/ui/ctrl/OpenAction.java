@@ -27,12 +27,9 @@ import dwriter.Dwriter;
 import dwriter.core.WorkFile;
 import dwriter.ctrl.WorkFileFactory;
 import dwriter.ui.FileChooser;
-import dwriter.ui.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
 import static javax.swing.Action.ACCELERATOR_KEY;
 import static javax.swing.Action.MNEMONIC_KEY;
 import javax.swing.JFileChooser;
@@ -44,13 +41,10 @@ import javax.swing.KeyStroke;
  */
 public class OpenAction extends BaseAction {
 
-    private Dwriter app;
+    private final Dwriter app;
 
-    private Frame frame;
-
-    public OpenAction(Dwriter app, Frame frame) {
+    public OpenAction(Dwriter app) {
         this.app = app;
-        this.frame = frame;
     }
 
     @Override
@@ -61,7 +55,8 @@ public class OpenAction extends BaseAction {
     @Override
     protected void defineProperties() {
         putValue(MNEMONIC_KEY, KeyEvent.VK_O);
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O,
+                ActionEvent.CTRL_MASK));
         //putValue(SMALL_ICON, new ImageIcon(Dwriter.class.getResource("res/img/new.gif")));
     }
 
@@ -80,7 +75,7 @@ public class OpenAction extends BaseAction {
             String name;
             String content;
 
-            int r = chooser.showOpenDialog(frame);
+            int r = chooser.showOpenDialog(app.getFrame());
             if (r == JFileChooser.APPROVE_OPTION) {
                 file = chooser.getSelectedFile();
 
@@ -91,10 +86,8 @@ public class OpenAction extends BaseAction {
                         file);
 
                 app.addNewWorkFile(workFile);
-                frame.reload();
+                app.getFrame().reload();
             }
         }
-
     }
-
 }
