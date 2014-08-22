@@ -28,7 +28,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import static javax.swing.Action.ACCELERATOR_KEY;
 import static javax.swing.Action.MNEMONIC_KEY;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
@@ -38,13 +37,10 @@ import javax.swing.KeyStroke;
  */
 public class AboutAction extends BaseAction {
 
-    private Dwriter app;
+    private final Dwriter app;
 
-    private JFrame frame;
-
-    public AboutAction(Dwriter app, JFrame frame) {
+    public AboutAction(Dwriter app) {
         this.app = app;
-        this.frame = frame;
     }
 
     @Override
@@ -61,7 +57,8 @@ public class AboutAction extends BaseAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        JOptionPane.showMessageDialog(frame, "Dwriter is a simple text editor."
+        JOptionPane.showMessageDialog(app.getFrame(), 
+                "Dwriter is a simple text editor."
                 + "\n\nVersion: alpha\n\n"
                 + "Created by: João Andrade\nE-mail: joaodeaps@gmail.com\n",
                 "About Dwriter",
