@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package dwriter.ui.ctrl;
 
 import dwriter.Dwriter;
@@ -36,9 +35,9 @@ import javax.swing.KeyStroke;
  * @author João Andrade (joaodeaps@gmail.com)
  */
 public class ExitAction extends BaseAction {
-    
-    private Dwriter app;
-    
+
+    private final Dwriter app;
+
     public ExitAction(Dwriter app) {
         this.app = app;
     }
@@ -57,7 +56,9 @@ public class ExitAction extends BaseAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        app.exit();
+        boolean flag = app.saveActiveWorkFile();
+        if (flag) {
+            app.exit();
+        }
     }
-    
 }
