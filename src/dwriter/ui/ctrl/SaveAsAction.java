@@ -36,7 +36,7 @@ import javax.swing.KeyStroke;
  */
 public class SaveAsAction extends BaseAction {
 
-    private Dwriter app;
+    private final Dwriter app;
 
     public SaveAsAction(Dwriter app) {
         this.app = app;
@@ -56,7 +56,8 @@ public class SaveAsAction extends BaseAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("guardar como....");
+        app.saveAsFile(app.getActiveWorkFile());
+        app.getFrame().reload();
     }
 
 }

@@ -36,12 +36,12 @@ import javax.swing.KeyStroke;
  */
 public class SaveAction extends BaseAction {
 
-    private Dwriter app;
-    
+    private final Dwriter app;
+
     public SaveAction(Dwriter app) {
         this.app = app;
     }
-    
+
     @Override
     protected String getName() {
         return "Save";
@@ -50,13 +50,19 @@ public class SaveAction extends BaseAction {
     @Override
     protected void defineProperties() {
         putValue(MNEMONIC_KEY, KeyEvent.VK_S);
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S,
+                ActionEvent.CTRL_MASK));
         //putValue(SMALL_ICON, new ImageIcon(Dwriter.class.getResource("res/img/new.gif")));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("Grava ficheiro");
+        if (app.getActiveWorkFile().getFile() == null) {
+            app.saveAsFile(app.getActiveWorkFile());
+        } else {
+            app.saveFile(app.getActiveWorkFile());
+        }
+        app.getFrame().reload();
     }
 
 }
