@@ -119,6 +119,12 @@ public class Dwriter {
      * frame. And sets this new WorkFile as the active one.
      */
     public void addNewWorkFile() {
+        // For now its only one tab...
+        // otherwise remove this if
+        if(workfiles.size() == 1) {
+            workfiles.remove(0);
+        }
+        
         WorkFile obj = workFileFactory.getWorkFileV1("Sem titulo", "", null);
 
         workfiles.add(obj);
