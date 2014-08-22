@@ -29,6 +29,7 @@ import dwriter.ui.ctrl.CopyAction;
 import dwriter.ui.ctrl.CutAction;
 import dwriter.ui.ctrl.DeleteAction;
 import dwriter.ui.ctrl.ExitAction;
+import dwriter.ui.ctrl.KeyListener;
 import dwriter.ui.ctrl.NewAction;
 import dwriter.ui.ctrl.OpenAction;
 import dwriter.ui.ctrl.PasteAction;
@@ -72,6 +73,8 @@ public class Frame extends JFrame {
 
     private static final String PARTIAL_FRAME_TITLE = " - Dwriter";
 
+    private KeyListener keyListener;
+
     /*Design Vars*/
     private JMenuBar menuBar = new JMenuBar();
     private JMenu menu;
@@ -102,6 +105,7 @@ public class Frame extends JFrame {
     public Frame(Dwriter app, String title) {
         super(title);
         this.app = app;
+        keyListener = new KeyListener(app, this);
 
         createWindow();
         defaultConfig();
@@ -124,7 +128,7 @@ public class Frame extends JFrame {
         menuItem = new JMenuItem(new NewAction(app));
         menu.add(menuItem);
 
-        menuItem = new JMenuItem(new OpenAction(app));
+        menuItem = new JMenuItem(new OpenAction(app, this));
         menu.add(menuItem);
 
         menuItem = new JMenuItem(new SaveAction(app));
@@ -201,7 +205,7 @@ public class Frame extends JFrame {
 
         //CENTER
         textArea = new JTextArea();
-        //textArea.addKeyListener(null);
+        textArea.addKeyListener(keyListener);
         textArea.setText(app.getActiveWorkFile().getContent());
         textArea.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
@@ -229,8 +233,17 @@ public class Frame extends JFrame {
                 undoManager.addEdit(e.getEdit());
             }
         });
-
+        
         add(textAreaScrollPane, BorderLayout.CENTER);
+    }
+    
+    /**
+     * 
+     */
+    public void reload() {
+        // CHANGES ARE NEEDED FOR THE NEW VERSION WITH MULTIPLE TABS
+        setTitle(app.getActiveWorkFile().getName() + PARTIAL_FRAME_TITLE);
+        textArea.setText(app.getActiveWorkFile().getContent());
     }
 
     /**
@@ -327,7 +340,8 @@ public class Frame extends JFrame {
 
         @Override
         public void run() {
-            frame = new Frame(app, "(Sem titulo)" + PARTIAL_FRAME_TITLE);
+            frame = new Frame(app, app.getActiveWorkFile().getName()
+                    + PARTIAL_FRAME_TITLE);
         }
 
     }
