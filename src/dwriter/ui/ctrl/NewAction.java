@@ -24,7 +24,6 @@
 package dwriter.ui.ctrl;
 
 import dwriter.Dwriter;
-import dwriter.ui.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
@@ -36,13 +35,10 @@ import javax.swing.KeyStroke;
  */
 public class NewAction extends BaseAction {
 
-    private Dwriter app;
-    
-    private Frame frame;
+    private final Dwriter app;
 
-    public NewAction(Dwriter app, Frame frame) {
+    public NewAction(Dwriter app) {
         this.app = app;
-        this.frame = frame;
     }
 
     @Override
@@ -53,7 +49,8 @@ public class NewAction extends BaseAction {
     @Override
     protected void defineProperties() {
         putValue(MNEMONIC_KEY, KeyEvent.VK_N);
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, 
+                ActionEvent.CTRL_MASK));
         //putValue(SMALL_ICON, new ImageIcon(Dwriter.class.getResource("res/img/new.gif")));
     }
 
@@ -66,7 +63,7 @@ public class NewAction extends BaseAction {
         
         if(flag) {
             app.addNewWorkFile();
-            frame.reload();
+            app.getFrame().reload();
         }
     }
 
