@@ -76,8 +76,10 @@ public class Frame extends JFrame {
     private static final String PARTIAL_FRAME_TITLE = " - Dwriter";
 
     private KeyListener keyListener;
-    
+
     private final UndoManager undoManager = new UndoManager();
+    
+    private String heap;
 
     /*Design Vars*/
     private JMenuBar menuBar = new JMenuBar();
@@ -88,7 +90,7 @@ public class Frame extends JFrame {
 
     /*Edit Vars*/
     private String tempHeap = null;
-    
+
     private int ini = -1;
     private int fin = -1;
     /*Text/Format Vars*/
@@ -158,7 +160,7 @@ public class Frame extends JFrame {
 
         menuItem = new JMenuItem(new UndoAction(app));
         menu.add(menuItem);
-        
+
         menuItem = new JMenuItem(new RedoAction(app));
         menu.add(menuItem);
 
@@ -192,7 +194,7 @@ public class Frame extends JFrame {
 
         menuItem = new JMenuItem(new WrapTextAction(app));
         menu.add(menuItem);
-        
+
         menuBar.add(menu);
 
         menu = new JMenu("About");
@@ -212,7 +214,7 @@ public class Frame extends JFrame {
         textAreaScrollPane = new JScrollPane(textArea);
         textAreaScrollPane.setVerticalScrollBarPolicy(
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        
+
         document = textArea.getDocument();
         document.addUndoableEditListener(new UndoListener(undoManager));
 
@@ -229,42 +231,56 @@ public class Frame extends JFrame {
          System.out.println(ex.getMessage());
          }
          }*/
-        
-        
         add(textAreaScrollPane, BorderLayout.CENTER);
     }
-    
+
     /**
-     * 
+     *
      */
     public void reload() {
         // CHANGES ARE NEEDED FOR THE NEW VERSION WITH MULTIPLE TABS
         setTitle(app.getActiveWorkFile().getName() + PARTIAL_FRAME_TITLE);
         textArea.setText(app.getActiveWorkFile().getContent());
     }
-    
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public UndoManager getUndoManager() {
         return undoManager;
     }
-    
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public JTextArea getTextArea() {
         return textArea;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public JScrollPane getTextAreaScrollPane() {
+        return textAreaScrollPane;
     }
     
     /**
      * 
      * @return 
      */
-    public JScrollPane getTextAreaScrollPane() {
-        return textAreaScrollPane;
+    public String getHeap() {
+        return heap;
+    }
+    
+    /**
+     * 
+     * @param heap 
+     */
+    public void setHeap(String heap) {
+        this.heap = heap;
     }
 
     /**

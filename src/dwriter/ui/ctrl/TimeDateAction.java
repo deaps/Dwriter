@@ -59,7 +59,7 @@ public class TimeDateAction extends BaseAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         //CAN BE IMPROVED 
-        // after the action, the carot position goes to the end of the file)
+        // after the action, the caret position goes to the end of the file)
         int selectionStart;
         int selectionEnd;
         String temp1;
