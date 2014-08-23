@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package dwriter.ui.ctrl;
 
 import dwriter.Dwriter;
@@ -35,10 +34,10 @@ import javax.swing.KeyStroke;
  *
  * @author João Andrade (joaodeaps@gmail.com)
  */
-public class CutAction extends BaseAction{
-    
+public class CutAction extends BaseAction {
+
     private final Dwriter app;
-    
+
     public CutAction(Dwriter app) {
         this.app = app;
     }
@@ -51,14 +50,19 @@ public class CutAction extends BaseAction{
     @Override
     protected void defineProperties() {
         //putValue(MNEMONIC_KEY, KeyEvent.VK_U);
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_X, 
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_X,
                 ActionEvent.CTRL_MASK));
         //putValue(SMALL_ICON, new ImageIcon(Dwriter.class.getResource("res/img/new.gif")));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("cut");
+        int ini;
+        int fin;
+        app.getFrame().setHeap(app.getFrame().getTextArea().getSelectedText());
+        ini = app.getFrame().getTextArea().getSelectionStart();
+        fin = app.getFrame().getTextArea().getSelectionEnd();
+        app.getFrame().getTextArea().replaceRange("", ini, fin);
     }
-    
+
 }
