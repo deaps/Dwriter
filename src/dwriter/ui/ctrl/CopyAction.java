@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package dwriter.ui.ctrl;
 
 import dwriter.Dwriter;
@@ -35,9 +34,9 @@ import javax.swing.KeyStroke;
  * @author João Andrade (joaodeaps@gmail.com)
  */
 public class CopyAction extends BaseAction {
-    
+
     private final Dwriter app;
-    
+
     public CopyAction(Dwriter app) {
         this.app = app;
     }
@@ -50,14 +49,16 @@ public class CopyAction extends BaseAction {
     @Override
     protected void defineProperties() {
         putValue(MNEMONIC_KEY, KeyEvent.VK_C);
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_C, 
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_C,
                 ActionEvent.CTRL_MASK));
         //putValue(SMALL_ICON, new ImageIcon(Dwriter.class.getResource("res/img/new.gif")));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("copy");
+
+        app.getFrame().setHeap(app.getFrame().getTextArea().getSelectedText());
+
     }
-    
+
 }
