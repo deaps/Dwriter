@@ -58,7 +58,22 @@ public class PasteAction extends BaseAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("cola");
+        //CAN BE IMPROVED 
+        // after the action, the caret position goes to the end of the file)
+        int selectionStart;
+        int selectionEnd;
+        String temp1;
+        String temp2;
+
+        selectionStart = app.getFrame().getTextArea().getSelectionStart();
+        selectionEnd = app.getFrame().getTextArea().getSelectionEnd();
+
+        temp1 = app.getFrame().getTextArea().getText().
+                substring(0, selectionStart);
+        temp2 = app.getFrame().getTextArea().getText().
+                substring(selectionEnd);
+        app.getFrame().getTextArea().
+                setText(temp1 + app.getFrame().getHeap() + temp2);
     }
     
 }
