@@ -44,6 +44,7 @@ import dwriter.ui.ctrl.WrapTextAction;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -78,7 +79,7 @@ public class Frame extends JFrame {
     private KeyListener keyListener;
 
     private final UndoManager undoManager = new UndoManager();
-    
+
     private String heap;
 
     /*Design Vars*/
@@ -118,9 +119,11 @@ public class Frame extends JFrame {
      */
     private void createWindow() {
 
+        // Icon
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(
+                Frame.class.getResource("resources/img/drawing.png")));
+
         //menuBar
-        //this.setIcon(getClass().getResource("drawing.png")).getImage();
-        //this.setIconImage(Toolkit.getDefaultToolkit().getImage(Frame.class.getResource("resources/img/drawing.png")));
         setJMenuBar(menuBar);
 
         //menu file
@@ -266,18 +269,18 @@ public class Frame extends JFrame {
     public JScrollPane getTextAreaScrollPane() {
         return textAreaScrollPane;
     }
-    
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public String getHeap() {
         return heap;
     }
-    
+
     /**
-     * 
-     * @param heap 
+     *
+     * @param heap
      */
     public void setHeap(String heap) {
         this.heap = heap;
