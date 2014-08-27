@@ -24,11 +24,9 @@
 package dwriter;
 
 import dwriter.core.WorkFile;
-import dwriter.core.WorkFileV1;
 import dwriter.ctrl.WorkFileFactory;
 import dwriter.ui.FileChooser;
 import dwriter.ui.Frame;
-import java.awt.List;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -37,8 +35,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Formatter;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
 import javax.swing.JFileChooser;
@@ -96,6 +92,8 @@ public class Dwriter {
     public Dwriter() {
 
         workFileFactory = new WorkFileFactory();
+        // Loads default properties
+        loadProperties();
 
         addNewWorkFile();
         /*System.out.println(I18N.getInstance().getString("test"));
@@ -106,9 +104,6 @@ public class Dwriter {
 
         // Loads extensions
         //ExtensionManager.getInstance();
-        // Loads default properties
-        loadProperties();
-
         //System.out.println(props.getProperty("i18n.language"));
         // Creates user interface
         frame = new dwriter.ui.Frame.Creator(this).createAndWait();
@@ -163,9 +158,9 @@ public class Dwriter {
     public WorkFile getActiveWorkFile() {
         return activeWorkFile;
     }
-    
+
     /**
-     * 
+     *
      * @return the main Frame
      */
     public Frame getFrame() {
@@ -351,7 +346,8 @@ public class Dwriter {
 
         try {
 
-            FileInputStream uProps = new FileInputStream(USER_PROPERTIES_FILENAME);
+            FileInputStream uProps = new FileInputStream(
+                    USER_PROPERTIES_FILENAME);
             props = new Properties();
             //InputStream uProps = Dwriter.class.
             //        getResourceAsStream(USER_PROPERTIES_FILENAME);
@@ -379,7 +375,8 @@ public class Dwriter {
             uProps.setProperty("i18n.language",
                     props.getProperty("i18n.language"));
 
-            FileOutputStream out = new FileOutputStream(USER_PROPERTIES_FILENAME);
+            FileOutputStream out = new FileOutputStream(
+                    USER_PROPERTIES_FILENAME);
 
             //File f = new File(USER_PROPERTIES_FILENAME);
             //OutputStream out = new FileOutputStream(f);
@@ -387,13 +384,32 @@ public class Dwriter {
             out.close();
             props = uProps;
         } catch (NullPointerException | IOException e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
             System.err.println("Error creating user properties!");
         }
 
     }
 
-    //public void saveUserProperties() {}
+    public void saveUserProperties() {
+        props.replace("mainwindow.width", ""+frame.getWidth());
+        props.replace("mainwindow.height", ""+frame.getHeight());
+        // falta language
+
+        // save properties in file
+        try {
+            FileOutputStream out = new FileOutputStream(
+                    USER_PROPERTIES_FILENAME);
+
+            //File f = new File(USER_PROPERTIES_FILENAME);
+            //OutputStream out = new FileOutputStream(f);
+            props.storeToXML(out, null);
+            out.close();
+        } catch (NullPointerException | IOException e) {
+            System.out.println(e.getMessage());
+            System.err.println("Error saving user properties!");
+        }
+    }
+
     /**
      * Returns the current user properties.
      *
@@ -411,14 +427,7 @@ public class Dwriter {
         boolean flag = saveActiveWorkFile();
         if (flag) {
             // Stores properties
-            /*if (props.size() > 0) {
-             try {
-             props.storeToXML("CleanSheets User Properties ("
-             + DateFormat.getDateTimeInstance().format(new Date()) + ")");
-             } catch (IOException e) {
-             System.err.println("An error occurred while saving properties.");
-             }
-             }*/
+            saveUserProperties();
 
             // Terminates the virtual machine
             System.exit(0);
