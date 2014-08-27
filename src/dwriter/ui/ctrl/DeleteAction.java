@@ -25,11 +25,8 @@
 package dwriter.ui.ctrl;
 
 import dwriter.Dwriter;
+import dwriter.i18n.I18N;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import static javax.swing.Action.ACCELERATOR_KEY;
-import static javax.swing.Action.MNEMONIC_KEY;
-import javax.swing.KeyStroke;
 
 /**
  *
@@ -45,7 +42,7 @@ public class DeleteAction extends BaseAction {
 
     @Override
     protected String getName() {
-        return "Delete";
+        return I18N.getInstance().getString("ctrl_delete_action_name");
     }
 
     @Override
@@ -57,7 +54,11 @@ public class DeleteAction extends BaseAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("delete");
+        int ini;
+        int fin;
+        ini = app.getFrame().getTextArea().getSelectionStart();
+        fin = app.getFrame().getTextArea().getSelectionEnd();
+        app.getFrame().getTextArea().replaceRange("", ini, fin);
     }
     
 }
