@@ -25,6 +25,7 @@ package dwriter;
 
 import dwriter.core.WorkFile;
 import dwriter.ctrl.WorkFileFactory;
+import dwriter.i18n.I18N;
 import dwriter.ui.FileChooser;
 import dwriter.ui.Frame;
 import java.io.File;
@@ -59,7 +60,7 @@ public class Dwriter {
      * The filename of the user properties, loaded from the user's current
      * working directory
      */
-    private static final String USER_PROPERTIES_FILENAME = "dwriter.xml";
+    private static final String USER_PROPERTIES_FILENAME = "user_props.xml";
 
     /**
      * The open files
@@ -96,15 +97,9 @@ public class Dwriter {
         loadProperties();
 
         addNewWorkFile();
-        /*System.out.println(I18N.getInstance().getString("test"));
-
-         I18N.getInstance().setLanguage(Lang.EN);
-
-         System.out.println(I18N.getInstance().getString("test"));*/
 
         // Loads extensions
         //ExtensionManager.getInstance();
-        //System.out.println(props.getProperty("i18n.language"));
         // Creates user interface
         frame = new dwriter.ui.Frame.Creator(this).createAndWait();
     }
@@ -120,7 +115,8 @@ public class Dwriter {
             workfiles.remove(0);
         }
 
-        WorkFile obj = workFileFactory.getWorkFileV1("Sem titulo", "", null);
+        WorkFile obj = workFileFactory.getWorkFileV1(I18N.getInstance().
+                getString("frame_top_title"), "", null);
 
         workfiles.add(obj);
 
@@ -178,8 +174,9 @@ public class Dwriter {
             String content = loadContent(activeWorkFile.getFile());
             // Checks if the content has been altered
             if (!activeWorkFile.getContent().equals(content)) {
-                op = yesNoCancelMessage("Do you want to save the changes?",
-                        "Save");
+                op = yesNoCancelMessage(
+                        I18N.getInstance().getString("yncm_save_changes"),
+                        I18N.getInstance().getString("yncm_save_changes_top"));
                 switch (op) {
                     case 0:
                         // hit the Yes option (will save)
@@ -198,7 +195,9 @@ public class Dwriter {
                 return true;
             }
         } else if (!activeWorkFile.getContent().equals("")) {
-            op = yesNoCancelMessage("Do you want to save the changes?", "Save");
+            op = yesNoCancelMessage(
+                    I18N.getInstance().getString("yncm_save_changes"),
+                    I18N.getInstance().getString("yncm_save_changes_top"));
             switch (op) {
                 case 0:
                     // hit the Yes option (will save)
@@ -240,7 +239,8 @@ public class Dwriter {
      * @param workFile
      */
     public void saveAsFile(WorkFile workFile) {
-        FileChooser chooser = new FileChooser("Save as...");
+        FileChooser chooser = new FileChooser(
+                I18N.getInstance().getString("fchooser_saveas_title"));
         Formatter formatter;
         File saveFile;
 
@@ -266,7 +266,9 @@ public class Dwriter {
      */
     public int yesNoCancelMessage(String message, String top) {
         int op = -1;
-        Object[] options = {"Yes", "No", "Cancel"};
+        Object[] options = {I18N.getInstance().getString("yncm_option_yes"),
+            I18N.getInstance().getString("yncm_option_no"),
+            I18N.getInstance().getString("yncm_option_cancel")};
         op = JOptionPane.showOptionDialog(frame,
                 message,
                 top,
@@ -391,8 +393,8 @@ public class Dwriter {
     }
 
     public void saveUserProperties() {
-        props.replace("mainwindow.width", ""+frame.getWidth());
-        props.replace("mainwindow.height", ""+frame.getHeight());
+        props.replace("mainwindow.width", "" + frame.getWidth());
+        props.replace("mainwindow.height", "" + frame.getHeight());
         // falta language
 
         // save properties in file
@@ -442,16 +444,6 @@ public class Dwriter {
      */
     public static void main(String[] args) {
         Dwriter app = new Dwriter();
-
-        // Configures look and feel
-        /*javax.swing.JFrame.setDefaultLookAndFeelDecorated(true);
-         javax.swing.JDialog.setDefaultLookAndFeelDecorated(false);
-
-         try {
-         javax.swing.UIManager.setLookAndFeel(
-         javax.swing.UIManager.getCrossPlatformLookAndFeelClassName());
-         } catch (Exception e) {
-         }*/
     }
 
 }

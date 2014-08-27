@@ -28,7 +28,8 @@ import dwriter.core.WorkFileV1;
 import java.io.File;
 
 /**
- *
+ * Creates WorkFiles Objects.
+ * 
  * @author João Andrade (joaodeaps@gmail.com)
  */
 public class WorkFileFactory {

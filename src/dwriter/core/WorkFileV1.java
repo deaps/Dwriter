@@ -25,8 +25,6 @@ package dwriter.core;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * This is the first implementation of WorkFile interface.
@@ -36,22 +34,22 @@ import java.util.logging.Logger;
 public class WorkFileV1 implements WorkFile {
 
     /**
-     *
+     * the name of the file
      */
     private String name;
 
     /**
-     *
+     * the file content
      */
     private String content;
 
     /**
-     *
+     * The file
      */
     private File file;
 
     /**
-     *
+     * Empty Constructor.
      */
     public WorkFileV1() {
         this.name = "";
@@ -60,7 +58,7 @@ public class WorkFileV1 implements WorkFile {
     }
 
     /**
-     *
+     * Main Constructor.
      * @param name
      * @param content
      * @param file

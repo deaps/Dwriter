@@ -24,9 +24,9 @@
 package dwriter.ui.ctrl;
 
 import dwriter.Dwriter;
+import dwriter.i18n.I18N;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
 /**
@@ -43,7 +43,7 @@ public class NewAction extends BaseAction {
 
     @Override
     protected String getName() {
-        return "New";
+        return I18N.getInstance().getString("ctrl_new_action_name");
     }
 
     @Override

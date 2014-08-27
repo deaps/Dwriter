@@ -24,6 +24,7 @@
 package dwriter.ui.ctrl;
 
 import dwriter.Dwriter;
+import dwriter.i18n.I18N;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import static javax.swing.Action.ACCELERATOR_KEY;
@@ -44,13 +45,14 @@ public class SaveAsAction extends BaseAction {
 
     @Override
     protected String getName() {
-        return "Save As...";
+        return I18N.getInstance().getString("ctrl_saveas_action_name");
     }
 
     @Override
     protected void defineProperties() {
         putValue(MNEMONIC_KEY, KeyEvent.VK_S);
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl alt S"));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                I18N.getInstance().getString("ctrl_saveas_action_key_stroke")));
         //putValue(SMALL_ICON, new ImageIcon(Dwriter.class.getResource("res/img/new.gif")));
     }
 

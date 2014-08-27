@@ -24,6 +24,7 @@
 package dwriter.ui.ctrl;
 
 import dwriter.Dwriter;
+import dwriter.i18n.I18N;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import static javax.swing.Action.ACCELERATOR_KEY;
@@ -45,7 +46,7 @@ public class AboutAction extends BaseAction {
 
     @Override
     protected String getName() {
-        return "About Dwriter";
+        return I18N.getInstance().getString("ctrl_about_action_name");
     }
 
     @Override
@@ -58,10 +59,10 @@ public class AboutAction extends BaseAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         JOptionPane.showMessageDialog(app.getFrame(), 
-                "Dwriter is a simple text editor."
-                + "\n\nVersion: alpha\n\n"
-                + "Created by: João Andrade\nE-mail: joaodeaps@gmail.com\n",
-                "About Dwriter",
+                I18N.getInstance().getString("ctrl_about_action_dialog1")
+                + I18N.getInstance().getString("ctrl_about_action_dialog2")
+                + I18N.getInstance().getString("ctrl_about_action_dialog3"),
+                I18N.getInstance().getString("ctrl_about_action_dialog4"),
                 JOptionPane.INFORMATION_MESSAGE);
     }
 

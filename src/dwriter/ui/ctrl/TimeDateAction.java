@@ -24,6 +24,7 @@
 package dwriter.ui.ctrl;
 
 import dwriter.Dwriter;
+import dwriter.i18n.I18N;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
@@ -46,7 +47,7 @@ public class TimeDateAction extends BaseAction {
 
     @Override
     protected String getName() {
-        return "Time/Date";
+        return I18N.getInstance().getString("ctrl_timedate_action_name");
     }
 
     @Override
@@ -67,7 +68,9 @@ public class TimeDateAction extends BaseAction {
 
         Calendar timeDate = Calendar.getInstance();
         // Timedate property in i18n
-        SimpleDateFormat dataf = new SimpleDateFormat("h:m a dd/MM/yyyy");
+        SimpleDateFormat dataf = new SimpleDateFormat(
+                I18N.getInstance().
+                getString("ctrl_timedate_action_dateformat"));
         String timeDateAdd = dataf.format(timeDate.getTime());
 
         selectionStart = app.getFrame().getTextArea().getSelectionStart();

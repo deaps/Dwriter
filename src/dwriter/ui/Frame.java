@@ -24,6 +24,7 @@
 package dwriter.ui;
 
 import dwriter.Dwriter;
+import dwriter.i18n.I18N;
 import dwriter.ui.ctrl.AboutAction;
 import dwriter.ui.ctrl.CopyAction;
 import dwriter.ui.ctrl.CutAction;
@@ -45,7 +46,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.BorderFactory;
@@ -55,10 +55,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.event.UndoableEditEvent;
-import javax.swing.event.UndoableEditListener;
 import javax.swing.text.Document;
 import javax.swing.undo.UndoManager;
 
@@ -74,12 +71,24 @@ public class Frame extends JFrame {
      */
     private Dwriter app;
 
+    /**
+     * Part of the title in the top of the frame
+     */
     private static final String PARTIAL_FRAME_TITLE = " - Dwriter";
 
+    /**
+     * Frame's KeyListener
+     */
     private KeyListener keyListener;
 
+    /**
+     * UndoManager for the document
+     */
     private final UndoManager undoManager = new UndoManager();
 
+    /**
+     * Temporary memory section for copy/cut/paste operations
+     */
     private String heap;
 
     /*Design Vars*/
@@ -89,15 +98,10 @@ public class Frame extends JFrame {
     private JTextArea textArea;
     private JScrollPane textAreaScrollPane;
 
-    /*Edit Vars*/
-    private String tempHeap = null;
-
-    private int ini = -1;
-    private int fin = -1;
-    /*Text/Format Vars*/
+    /**
+     * Document object used for undo/redo operations
+     */
     private Document document;
-    private String originalData;
-    private String docTitle;
 
     /**
      * Class Constructor.
@@ -127,8 +131,9 @@ public class Frame extends JFrame {
         setJMenuBar(menuBar);
 
         //menu file
-        menu = new JMenu("File");
-        menu.setMnemonic('f');
+        menu = new JMenu(I18N.getInstance().getString("frame_menu_file_title"));
+        menu.setMnemonic(I18N.getInstance().
+                getString("frame_menu_file_mnemonic").charAt(0));
 
         menuItem = new JMenuItem(new NewAction(app));
         menu.add(menuItem);
@@ -158,8 +163,9 @@ public class Frame extends JFrame {
         menuBar.add(menu);
 
         //menu editar
-        menu = new JMenu("Edit");
-        menu.setMnemonic('e');
+        menu = new JMenu(I18N.getInstance().getString("frame_menu_edit_title"));
+        menu.setMnemonic(I18N.getInstance().
+                getString("frame_menu_edit_mnemonic").charAt(0));
 
         menuItem = new JMenuItem(new UndoAction(app));
         menu.add(menuItem);
@@ -192,16 +198,20 @@ public class Frame extends JFrame {
         menuBar.add(menu);
 
         //menu format
-        menu = new JMenu("Format");
-        menu.setMnemonic('r');
+        menu = new JMenu(I18N.getInstance().
+                getString("frame_menu_format_title"));
+        menu.setMnemonic(I18N.getInstance().
+                getString("frame_menu_format_mnemonic").charAt(0));
 
         menuItem = new JMenuItem(new WrapTextAction(app));
         menu.add(menuItem);
 
         menuBar.add(menu);
 
-        menu = new JMenu("About");
-        menu.setMnemonic('a');
+        menu = new JMenu(I18N.getInstance().
+                getString("frame_menu_about_title"));
+        menu.setMnemonic(I18N.getInstance().
+                getString("frame_menu_about_mnemonic").charAt(0));
 
         menuItem = new JMenuItem(new AboutAction(app));
         menu.add(menuItem);
@@ -238,7 +248,7 @@ public class Frame extends JFrame {
     }
 
     /**
-     *
+     * Reloads the frame. Acts lika a refresh button.
      */
     public void reload() {
         // CHANGES ARE NEEDED FOR THE NEW VERSION WITH MULTIPLE TABS
@@ -247,7 +257,8 @@ public class Frame extends JFrame {
     }
 
     /**
-     *
+     * Returns the Undo Manager.
+     * 
      * @return
      */
     public UndoManager getUndoManager() {
@@ -255,31 +266,32 @@ public class Frame extends JFrame {
     }
 
     /**
-     *
-     * @return
+     * Gets the text area. With the content currently on display.
+     * @return TextArea
      */
     public JTextArea getTextArea() {
         return textArea;
     }
 
     /**
-     *
-     * @return
+     * Gets the main scrollpane.
+     * @return JScrollPane
      */
     public JScrollPane getTextAreaScrollPane() {
         return textAreaScrollPane;
     }
 
     /**
-     *
-     * @return
+     * Gets the heap content.
+     * @return heap's content
      */
     public String getHeap() {
         return heap;
     }
 
     /**
-     *
+     * Sets  content to the heap.
+     * 
      * @param heap
      */
     public void setHeap(String heap) {

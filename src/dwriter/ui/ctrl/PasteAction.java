@@ -25,6 +25,7 @@
 package dwriter.ui.ctrl;
 
 import dwriter.Dwriter;
+import dwriter.i18n.I18N;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import static javax.swing.Action.ACCELERATOR_KEY;
@@ -45,7 +46,7 @@ public class PasteAction extends BaseAction {
 
     @Override
     protected String getName() {
-        return "Paste";
+        return I18N.getInstance().getString("ctrl_paste_action_name");
     }
 
     @Override

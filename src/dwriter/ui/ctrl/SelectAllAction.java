@@ -25,6 +25,7 @@
 package dwriter.ui.ctrl;
 
 import dwriter.Dwriter;
+import dwriter.i18n.I18N;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.KeyStroke;
@@ -43,7 +44,7 @@ public class SelectAllAction extends BaseAction {
 
     @Override
     protected String getName() {
-        return "Select All";
+        return I18N.getInstance().getString("ctrl_selectall_action_name");
     }
 
     @Override

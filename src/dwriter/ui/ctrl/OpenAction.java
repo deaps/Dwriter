@@ -26,6 +26,7 @@ package dwriter.ui.ctrl;
 import dwriter.Dwriter;
 import dwriter.core.WorkFile;
 import dwriter.ctrl.WorkFileFactory;
+import dwriter.i18n.I18N;
 import dwriter.ui.FileChooser;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -49,7 +50,7 @@ public class OpenAction extends BaseAction {
 
     @Override
     protected String getName() {
-        return "Open...";
+        return I18N.getInstance().getString("ctrl_open_action_name");
     }
 
     @Override
