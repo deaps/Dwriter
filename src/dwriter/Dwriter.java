@@ -90,13 +90,17 @@ public class Dwriter {
     /**
      * Creates the Dwriter application.
      */
-    public Dwriter() {
+    public Dwriter(String filePath) {
 
         workFileFactory = new WorkFileFactory();
         // Loads default properties
         loadProperties();
 
-        addNewWorkFile();
+        if (filePath != null) {
+            addNewWorkFile(filePath);
+        } else {
+            addNewWorkFile();
+        }
 
         // Loads extensions
         //ExtensionManager.getInstance();
@@ -117,6 +121,30 @@ public class Dwriter {
 
         WorkFile obj = workFileFactory.getWorkFileV1(I18N.getInstance().
                 getString("frame_top_title"), "", null);
+
+        workfiles.add(obj);
+
+        activeWorkFile = workfiles.get(workfiles.size() - 1);
+
+    }
+
+    /**
+     * Adds a new workfile with a file to the arraylist of workfiles in display
+     * on the frame. And sets this new WorkFile as the active one.
+     *
+     * @param filePath
+     */
+    public void addNewWorkFile(String filePath) {
+        // For now its only one tab...
+        // otherwise remove this if
+        if (workfiles.size() == 1) {
+            workfiles.remove(0);
+        }
+
+        File file = new File(filePath);
+
+        WorkFile obj = workFileFactory.getWorkFileV1(file.getName(),
+                loadContent(file), file);
 
         workfiles.add(obj);
 
@@ -443,7 +471,13 @@ public class Dwriter {
      * @param args the command-line arguments (not used)
      */
     public static void main(String[] args) {
-        Dwriter app = new Dwriter();
+        if (args.length == 0) {
+            Dwriter app = new Dwriter(null);
+        } else {
+            //One file only
+            Dwriter app = new Dwriter(args[0]);
+        }
+
     }
 
 }
